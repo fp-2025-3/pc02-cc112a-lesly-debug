@@ -3,14 +3,15 @@ using namespace std;
 void imprimir(int (*inicio)[5],int (*fin)[5]);
 int* obtenerFila(int (*inicio)[5],int (*fin)[5],int fila);
 int* obtenerCol(int (*inicio)[5],int (*fin)[5],int fila,int col);
-void busquedaPico(int (*inicio)[5],int (*fin)[5]);
+bool esPico(int (*inicio)[5],int filas,int columnas,int i,int j);
+void busquedaPico(int (*inicio)[5],int filas,int columnas);
 int main(){
     int A[4][5]={{3,3,3,3,3},{3,4,4,2,3},{3,4,5,4,3},{3,3,3,3,3}};
     int (*inicio)[5]=&A[0];
     int (*fin)[5]=&A[4];
     cout<<"Matriz: "<<endl;
     imprimir(inicio,fin);
-    busquedaPico(inicio,fin);
+    busquedaPico(inicio,4,5);
     return 0;
 }
 void imprimir(int (*inicio)[5],int (*fin)[5]){
@@ -23,27 +24,52 @@ void imprimir(int (*inicio)[5],int (*fin)[5]){
         cout<<endl;
     }
 }
-int* obtenerFila(int (*inicio)[5],int (*fin)[5],int fila){
-    int totalFilas=fin-inicio;
-    if(fila<0||fila>totalFilas){
-        return *(inicio+fila);
+bool esPico(int (*inicio)[5],int filas,int columnas,int i,int j){
+    int val=*(*(inicio+i)+j);
+    bool mayorEstricto=false;
+    if(i-1>=0){
+        int v=*(*(inicio+i-1)+j);
+        if(val<v){
+            return false;
+        }
+        if(val>v){
+            mayorEstricto=true;
+        }
     }
-    return nullptr;
-}
-int* obtenerCol(int (*inicio)[5],int (*fin)[5],int fila,int col){
-    int totalFilas=fin-inicio;
-    if(fila<0||fila>totalFilas||col<0||col>5){
-        return *(inicio+fila)+col;
+    if(i+1<filas){
+        int v=*(*(inicio+i+1)+j);
+        if(val<v){
+            return false;
+        }
+        if(val<v){
+            mayorEstricto=true;
+        }
     }
-    return nullptr;
+    if(j-1>=0){
+        int v=*(*(inicio+i)+j-1);
+        if(val<v){
+            return false;
+        }
+        if(val>v){
+            mayorEstricto=true;
+        }
+    }
+    if(j+1<columnas){
+        int v=*(*(inicio+i)+j+1);
+        if(val<v){
+            return false;
+        }
+        if(val>v){
+            mayorEstricto=true;
+        }
+    }
+    return mayorEstricto;
 }
-void busquedaPico(int (*inicio)[5],int (*fin)[5]){
-    for(int (*fila)[5]=inicio;fila<fin;fila++){
-        int* colInicio=*fila;
-        int* colFin=colInicio+5;
-        for(int* col=colInicio;col<colFin;col++){
-            if(((*col>=*(*(inicio+**fila)-1))&&(*col>=*(*(inicio+**fila)+1)))&&((*col>*(*(inicio+**fila)-1))&&(*col>*(*(inicio+**fila)+1)))){
-                cout<<"Pico en ("<<obtenerFila(inicio,fin,**fila)<<","<<obtenerCol(inicio,fin,**fila,*col)<<"): "<<*col<<endl;
+void busquedaPico(int (*inicio)[5],int filas,int columnas){
+    for(int i=0;i<filas;i++){
+        for(int j=0;j<columnas;j++){
+            if(esPico(inicio,filas,columnas,i,j)){
+                cout<<"Pico en ("<<i<<","<<j<<"):"<<*(*(inicio+i)+j)<<endl;
             }
         }
     }
