@@ -13,6 +13,17 @@ bool divideA(int a,int b){
 bool mismoResiduoMod5(int a,int b){
     return a%5==b%5;
 }
+int contar(int n){
+    int contador=0;
+    while(contador>0){
+        n=n/10;
+        contador=contador+1;
+    }
+    return contador;
+}
+bool cantidadDigitos(int a,int b){
+    return contar(a)==contar(b);
+}
 int main(){
     int A[]={-1,21,2,-2,8,13,25};
     int n=sizeof(A)/sizeof(A[0]);
@@ -30,6 +41,7 @@ int main(){
     int* r2=buscar(p,q,mismaParidad,valor);
     int* r3=buscar(p,q,divideA,valor);
     int* r4=buscar(p,q,mismoResiduoMod5,valor);
+    int* r5=buscar(p,q,cantidadDigitos,valor);
     if(r1){
         cout<<"Igualdad exacta: valor encontrado: "<<*r1<<"Posicion: "<<r1;
     }else{
@@ -54,6 +66,11 @@ int main(){
         cout<<"No encontrado.";
     }
     cout<<endl;
+    if(r5){
+        cout<<"Misma cantidad de digitos "<<*r5<<"Posicion: "<<r5;
+    }else{
+        cout<<"No encontrado.";
+    }
     return 0;
 }
 int* buscar(int* inicio,int* fin,bool (*equivale)(int,int),int clave){
