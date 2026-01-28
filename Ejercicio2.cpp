@@ -8,12 +8,18 @@ bool mismaParidad(int a,int b){
     return a%2==b%2;
 }
 bool divideA(int a,int b){
+    if(a==0||b==0){
+        return false;
+    }
     return (a%b==0||b%a==0);
 }
 bool mismoResiduoMod5(int a,int b){
     return a%5==b%5;
 }
 int contar(int n){
+    if(n==0){
+        return 1;
+    }
     int contador=0;
     while(contador>0){
         n=n/10;
