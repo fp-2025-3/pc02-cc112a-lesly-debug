@@ -47,7 +47,7 @@ int main(){
     char frase[200]={"aprender punteros exige mucha logica y practica"};
     char* palabras[50];
     int n=separar_palabras(frase,palabras);
-    separar_palabras(frase,palabras);
+    ordenar(palabras,n);
     imprimir(palabras,n);
     return 0;
 }
