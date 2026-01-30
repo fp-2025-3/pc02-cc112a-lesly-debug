@@ -54,12 +54,10 @@ int separar_palabras(char* frase,char* palabras[]){
     char* p=frase;
     bool nuevaPalabra=true;
     while(*p!='\0'){
-        if(*p!='\0'){
-            if(nuevaPalabra){
-                palabras[i]=p;
-                i=i+1;
-                nuevaPalabra=false;
-            }
+        if(*p!=' '&&nuevaPalabra){
+            palabras[i]=p;
+            i=i+1;
+            nuevaPalabra=false;
         }
         if(*p==' '){//Solo interesan dos palabras
             *p='\0';
