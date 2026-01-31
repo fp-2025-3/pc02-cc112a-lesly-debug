@@ -4,10 +4,17 @@
 using namespace std;
 const int NFILAS=9;
 const int NCOLS=9;
+//La funcion genera cada fila como una permutacion del 1 al 9,llena y luego mezcla aleatoriamente
 void generar(int** matriz){
     for(int i=0;i<NFILAS;i++){
         for(int j=0;j<NCOLS;j++){
-            *(*(matriz+i)+j)=rand()%9+1;
+            *(*(matriz+i)+j)=j+1;
+        }
+        for(int j=0;j<NCOLS;j++){
+            int r=rand()%NCOLS;
+            int temp=*(*(matriz+i)+j);
+            *(*(matriz+i)+j)=*(*(matriz+i)+r);
+            *(*(matriz+i)+r)=temp;
         }
     }
 }
