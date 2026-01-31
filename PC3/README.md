@@ -9,3 +9,5 @@
 
 ## Ejercicio 3
 ![Ejercicio 3](Imagen/Ejercicio3.png)
+## Ejercicio 4
+![Ejercicio 4](Imagen/Ejercicio4.png)
