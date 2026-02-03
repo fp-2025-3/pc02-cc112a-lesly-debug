@@ -1,4 +1,4 @@
-# Makefile 
+﻿# Makefile 
 CXX := g++
 
 # Flags base
@@ -29,23 +29,30 @@ NORMAL_DIR := $(BUILD_DIR)/normal
 DEBUG_DIR  := $(BUILD_DIR)/debug
 ASAN_DIR   := $(BUILD_DIR)/asan
 
+.PHONY: all normal debug asan valgrind clean
+
 # Ejecutables (uno por cada .cpp)
-TARGETS := $(BASENAMES:%.cpp=%$(EXEEXT))
+# TARGETS := $(BASENAMES:%.cpp=%$(EXEEXT)) 
 
 
 # Targets publicos
-all: normal link-normal
+all: normal   
 
 normal: $(BASENAMES:%=$(NORMAL_DIR)/%$(EXEEXT))
 
-debug:  $(BASENAMES:%=$(DEBUG_DIR)/%$(EXEEXT)) link-debug
+debug:  $(BASENAMES:%=$(DEBUG_DIR)/%$(EXEEXT))   
 
-asan:   $(BASENAMES:%=$(ASAN_DIR)/%$(EXEEXT)) link-asan
+asan:   $(BASENAMES:%=$(ASAN_DIR)/%$(EXEEXT))   
 
+
+
+# ---------- VALGRIND ----------
 valgrind: debug
-	$(VALGRIND) ./$(firstword $(TARGETS))
-
-
+ifeq ($(OS),Windows_NT)
+	@echo "Valgrind no disponible en Windows"
+else
+	$(VALGRIND) ./$(DEBUG_DIR)/$(firstword $(BASENAMES))$(EXEEXT)
+endif
 
 # Reglas de compilacion
 $(NORMAL_DIR)/%$(EXEEXT): %.cpp
@@ -60,20 +67,10 @@ $(ASAN_DIR)/%$(EXEEXT): %.cpp
 	$(MKDIR) $(ASAN_DIR)
 	$(CXX) $(BASE_FLAGS) -fsanitize=address -fno-omit-frame-pointer -g -O1 $< -o $@
 
-# Enlace local (flujo clasico)
-link-normal:
-	$(RM) $(TARGETS)
-	ln -s $(NORMAL_DIR)/$(firstword $(TARGETS)) $(firstword $(TARGETS))
 
-link-debug:
-	$(RM) $(TARGETS)
-	ln -s $(DEBUG_DIR)/$(firstword $(TARGETS)) $(firstword $(TARGETS))
 
-link-asan:
-	$(RM) $(TARGETS)
-	ln -s $(ASAN_DIR)/$(firstword $(TARGETS)) $(firstword $(TARGETS))
 
 # Limpieza
 clean:
-	$(RM) $(TARGETS)
+	# $(RM) $(TARGETS)  
 	$(RM) -r build

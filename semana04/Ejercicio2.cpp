@@ -1,67 +1,52 @@
 #include<iostream>
+#include<cstdlib>
+#include<ctime>
 using namespace std;
-double** crearMatriz(int n){
-    double** A;
-    A=new double*[n];
-    for(int i=0;i<n,i++){
-        *(A+i)=new double[n];
-    }
-    return A;
-}
-void leerMatriz(double** a,int n){
+const int n=2;
+const int m=3;
+int** matrizDinamica(int n,int m){
+    int** M=new int*[n];
     for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            cin>>*(*(a+i)+j);
+        *(M+i)=new int[m]
+    }
+    return M;
+}
+void llenarMatriz(int** M,int n,int m){
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            *(*(M+i)+j)=rand()%10;
         }
     }
 }
-void imprimir(double** a,int n){
-    cout<<fixed<<setprecision(2);
+bool validarFilas(int** M,int n,int m){
     for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            cout<<setw(7)<<*(*(a+i)+j)<<" ";
+        int suma=0;
+        for(int j=0;j<m;j++){
+            suma=suma+*(*(M+i)+j);
         }
-        cout<<endl;
-    }
-}
-double** transpuesta(double** a,int n){
-    double** aT=crearMatriz(int n);
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            double temp=*(*(aT+i)+j);
-            *(*(aT+i)+j)=*(*(aT+j)+i);
-            *(*(aT+j)+i)=temp;
+        if(suma%2!=0){
+            return false;
         }
     }
+    return true;
 }
-void multiplicar(double** a,double** b,double** I,int n){
-    for(int i=0;i<n;++){
-        for(int j=0;j<n;j++){
-            *(*(I+i)+j)=0;
-            for(int k=0;k<n;k++){
-                *(*(I+i)+j)=*(*(I+i)+j)+(*(*(A+i)+k))*(*(*(B+k)+j));
+bool validarColumnas(int** M,int n,int m){
+    for(int i=0;i<n;i++){
+        int max=M[i][0];
+        for(int j=0;j<m;j++){
+            if(max<M[i][j]){
+                max=M[i][j];
+                if(M[i][j]>0){
+                    return true;
+                }
             }
         }
     }
-}
-double traza(double** I,int n){
-    double trz=0;
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            trz=trz+*(*(A+i)+i);
-        }
-    }
-    return trz;
-}
-double energia(double** I,int n){
-    double suma=0;
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            suma=suma+(*(*(I+i)+j))*(*(*(I+i)+j));
-        }
-    }
-    return suma/(n*n);
+    return false;
 }
 int main(){
+    int** M=matrizDinamica(n,m);
+    llenarMatriz(M,n,m);
+    
     return 0;
 }
