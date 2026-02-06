@@ -26,4 +26,7 @@ int main(){
     return 0;
 }
 //b) Sea A=[2,1,3]
-//[2]-[1]-[3]     [2]-[1,3]       [2,1]-[3]     [2,1,3]
+//pos=0     [2]-[1,3] costo=2+(1*3)
+//pos=1     [2,1]-[3] costo=(2*1)+3
+//pos=2     [2,1,3]   costo=(2*1*3)
+//pos=3 no es valido, sale del arreglo
