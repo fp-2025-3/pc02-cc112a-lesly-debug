@@ -25,8 +25,24 @@ int main(){
     cout<<"Costo maximo: "<<costoMaximo(arr,n,0);
     return 0;
 }
-//b) Sea A=[2,1,3]
-//pos=0     [2]-[1,3] costo=2+(1*3)
-//pos=1     [2,1]-[3] costo=(2*1)+3
-//pos=2     [2,1,3]   costo=(2*1*3)
-//pos=3 no es valido, sale del arreglo
+//b) Sea A=[2,1,3], n=3
+//pos=3 retorna 0
+
+//costoMaximo(pos=2)
+//particion: [3]
+//producto=3
+//costo=3+0
+//retorna 3
+
+//costoMaximo(pos=1)
+//particiones:
+//[1]-[3]   costo=1+3=4
+//[1,3]     costo=(1*3)=3
+//retorna 4
+
+//costoMaximo(pos=0)
+//particiones:
+//[2]-[1]-[3]   costo=2+4=6
+//[1,3]         costo=(2*1)+3=5
+//[2,1,3]       costo=(2*1*3)+0=6
+//retorna 6
