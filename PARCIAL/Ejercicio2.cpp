@@ -18,10 +18,8 @@ void ordenarPorTiempo(string* nombre,int* tiempo,int n){
             if(tiempo[j]<tiempo[min]){
                 min=j;
             }
-            if(tiempo[j]==tiempo[min]){
-                if(j<min){
-                    min=j;
-                }
+        }
+        if(min!=i){
             string auxNombre=nombre[i];
             nombre[i]=nombre[min];
             nombre[min]=auxNombre;
@@ -31,9 +29,8 @@ void ordenarPorTiempo(string* nombre,int* tiempo,int n){
         }
     }
 }
-}
 void mostrarRanking(string* nombre,int* tiempo,int n){
-    cout<<"RANKING FNAL\n";
+    cout<<"RANKING FINAL\n";
     for(int i=0;i<n;i++){
         cout<<i+1<<".  "<<nombre[i]<<" - "<<tiempo[i]<<endl;
     }
@@ -46,14 +43,12 @@ int buscarCorredor(string* nombre,string buscado,int n){
     }
     return -1;
 }
-void mostrarRango(int min,int max,int* tiempo,string* nombre){
+void mostrarRango(int min,int max,int* tiempo,string* nombre,int n){
     cout<<"Corredores en el rango ["<<min<<","<<max<<"]:"<<endl;
-    int i=0;
-    while(min<=max){
+    for(int i=0;i<n;i++){
         if(min<=tiempo[i]&&tiempo[i]<=max){
             cout<<nombre[i]<<" - "<<tiempo[i]<<endl;
         }
-        i=i+1;
     }
 }
 int main(){
@@ -82,7 +77,7 @@ int main(){
     int max;
     cout<<"\nIngrese tiempo minimo y maximo: ";
     cin>>min>>max;
-    mostrarRango(min,max,tiempo,nombre);
+    mostrarRango(min,max,tiempo,nombre,n);
     delete[] nombre;
     delete[] tiempo;
     return 0;
