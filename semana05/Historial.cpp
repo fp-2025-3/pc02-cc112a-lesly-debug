@@ -1,5 +1,5 @@
 #include<iostream>
-#include<iostream>
+#include<string>
 using namespace std;
 struct Pagina{
     string URL;
@@ -9,7 +9,6 @@ struct Pagina{
     int ID;
 };
 void agregarEntrada(Pagina& p,int id){
-    cin.ignore();
     cout<<"Ingrese la URL: ";
     getline(cin,p.URL);
     cout<<"Titulo de la pagina: ";
@@ -20,6 +19,43 @@ void agregarEntrada(Pagina& p,int id){
     getline(cin,p.hora);
     p.ID=id;
     cout<<">>Entrada agregada con ID: "<<p.ID<<endl;
+}
+void mostrarHistorial(Pagina p[],int n){
+    if(n==0){
+        cout<<"Historial vacio.\n";
+        return;
+    }
+    cout<<"---Historial de navegacion---\n";
+    for(int i=0;i<n;i++){
+        cout<<"ID: "<<p[i].ID<<" | URL: "<<p[i].URL<<" | Titulo: "<<p[i].titulo<<" | Fecha: "<<p[i].fecha<<" | Hora: "<<p[i].hora<<endl;
+    }
+}
+void eliminarPorID(Pagina p[],int& n,int idBuscado){
+    for(int i=0;i<n;i++){
+        if(p[i].ID==idBuscado){
+            for(int j=i;j<n-1;j++){
+                p[j]=p[j+1];
+            }
+            n=n-1;
+            cout<<"Entrada eliminada exitosamente.\n";
+            return;
+        }
+    }
+    cout<<"ID no encontrado.\n";
+}
+void buscarVisitasPorURL(Pagina p[],int n,string URLBuscado){
+    for(int i=0;i<n;i++){
+        if(p[i].URL==URLBuscado){
+            cout<<"Resultados encontrados:\n";
+            cout<<"ID: "<<p[i].ID<<" | "<<"Titulo: "<<p[i].titulo<<" | "<<"Fecha: "<<p[i].fecha<<" | Hora: "<<p[i].hora<<endl;
+            return;
+        }
+    }
+    cout<<"URL no encontrado.\n";
+}
+void limpiarHistorial(int& n){
+    n=0;
+    cout<<">>>Historial limpiado correctamente.\n";
 }
 int main(){
     int opcion;
@@ -36,10 +72,44 @@ int main(){
         cin>>opcion;
         switch(opcion){
             case 1:{
+                cin.ignore();
                 agregarEntrada(p[n],id);
                 n=n+1;
+                id=id+1;
                 break;
-            };
+            }
+            case 2:{
+                mostrarHistorial(p,n);
+                break;
+            }
+            case 3:{
+                int idBuscado;
+                cout<<"Ingrese el ID de la entrada a eliminar: ";
+                cin>>idBuscado;
+                eliminarPorID(p,n,idBuscado);
+                break;
+            }
+            case 4:{
+                cin.ignore();
+                string URLBuscado;
+                cout<<"Ingrese el URL a buscar: ";
+                getline(cin,URLBuscado);
+                buscarVisitasPorURL(p,n,URLBuscado);
+                break;
+            }
+            case 5:{
+                char r;
+                cout<<"¿Estas seguro que deseas borrar todo el historial?(s/n): ";
+                cin>>r;
+                if(r=='s'){
+                    limpiarHistorial(n);
+                }
+                break;
+            }
+            case 0:{
+                cout<<"Saliendo del sistema...";
+                break;
+            }
         }
     }while(opcion!=0);
     return 0;
