@@ -14,7 +14,7 @@ void mostrarPolinomio(Termino t[],int n){
     for(int i=0;i<n;i++){
         cout<<t[i].coeficiente;
         if(t[i].exponente!=0){
-            cout<<"x "<<t[i].exponente;
+            cout<<"x^"<<t[i].exponente;
         }
         if(i<(n-1)){
             cout<<"+";
@@ -54,6 +54,33 @@ int gradoSumaPolinomios(Termino tA[],Termino tB[],int n,int m,Termino Suma[]){
     }
     return k;
 }
+int gradoProductoPolinomios(Termino tA[],Termino tB[],int n,int m,Termino producto[]){
+    int k=0;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            producto[k].coeficiente=tA[i].coeficiente*tB[j].coeficiente;
+            producto[k].exponente=tA[i].exponente+tB[j].exponente;
+            k=k+1;
+        }
+    }
+    int r=0;
+    for(int i=0;i<k;i++){
+        bool repetido=false;
+        for(int j=0;j<r;j++){
+            if(producto[j].exponente==producto[i].exponente){
+                producto[j].coeficiente=producto[j].coeficiente+producto[i].coeficiente;
+                repetido=true;
+                break;
+            }
+        }
+        if(!repetido){
+            producto[r].exponente=producto[i].exponente;
+            producto[r].coeficiente=producto[i].coeficiente;
+            r=r+1;
+        }
+    }
+    return r;
+}
 int main(){
     Termino terminosA[20];
     Termino terminosB[20];
@@ -69,8 +96,12 @@ int main(){
     cout<<"\nSegundo polinomio: ";
     mostrarPolinomio(terminosB,m);
     Termino sumaPolinomio[20];
-    int total=gradoSumaPolinomios(terminosA,terminosB,n,m,sumaPolinomio);
+    int totalSuma=gradoSumaPolinomios(terminosA,terminosB,n,m,sumaPolinomio);
     cout<<"\nSuma:";
-    mostrarPolinomio(sumaPolinomio,total);
+    mostrarPolinomio(sumaPolinomio,totalSuma);
+    Termino productoPolinomio[20];
+    int totalProducto=gradoProductoPolinomios(terminosA,terminosB,n,m,productoPolinomio);
+    cout<<"\nProducto:";
+    mostrarPolinomio(productoPolinomio,totalProducto);
     return 0;
 }
