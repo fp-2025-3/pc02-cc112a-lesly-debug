@@ -33,7 +33,7 @@ void mostrandoDatos(Seleccion s[],int n){
 }
 int indMejorRendimiento(Seleccion s[],int n){
     int indMax=0;
-    for(int i=0;i<n;i++){
+    for(int i=1;i<n;i++){
         if(s[i].rendimiento>s[indMax].rendimiento){
             indMax=i;
         }

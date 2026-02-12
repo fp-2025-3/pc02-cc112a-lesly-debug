@@ -16,7 +16,7 @@ void leerDatos(Estudiante* e,int n){
 }
 int indMayorNota(Estudiante* e,int n){
     int indMax=0;
-    for(int i=0;i<n;i++){
+    for(int i=1;i<n;i++){
         if(e[i].nota>e[indMax].nota){
             indMax=i;
         }
