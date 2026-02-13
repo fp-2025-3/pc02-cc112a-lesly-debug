@@ -6,12 +6,11 @@ struct Polinomio{
 };
 void mostrarPolinomio(const Polinomio& p){
     for(int i=p.grado;i>=0;i--){
-        cout<<p.coeficiente[i];
-        if(i!=0){
-            cout<<"x^"<<i;
-        }
-        if(i>0&&p.coeficiente[i-1]>=0){
-            cout<<"+";
+        if(p.coeficiente[i]!=0){
+            cout<<p.coeficiente[i];
+            if(i>0){
+                cout<<"x^"<<i<<"+";
+            }
         }
     }
     cout<<endl;
