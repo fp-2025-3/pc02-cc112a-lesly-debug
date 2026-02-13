@@ -7,7 +7,7 @@ struct Item{
 };
 struct Pedido{
     int numeroPedido;
-    char* nombreCLiente;
+    char* nombreCliente;
     Item* items;
     int cantidadItems;
 };
@@ -29,9 +29,10 @@ void my_strcpy(char* destino,const char* origen){
 }
 Pedido* crearPedido(int numero,const char* cliente,int cantidadItems){
     Pedido* p=new Pedido;
-    p.nombre=new char[my_strlen(cliente)+1];
-    my_strcpy(p.nombre,cliente);
-    p.items=new Item[cantidadItems]
+    p->nombreCliente=new char[my_strlen(cliente)+1];
+    my_strcpy(p->nombreCliente,cliente);
+    p->items=new Item[cantidadItems];
+    return p;
 }
 int main(){
     return 0;
