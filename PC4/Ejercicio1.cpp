@@ -39,7 +39,7 @@ Polinomio suma(const Polinomio& a,const Polinomio& b,const Polinomio& c){
     }
     return s;
 }
-Polinomio multiplicar(const Polinomio& a,const Polinomio& b){
+Polinomio multiplicar(const Polinomio& a,const Polinomio& b,const Polinomio& c){
     Polinomio p;
     p.grado=a.grado+b.grado;
     p.coeficiente=new double[p.grado+1];
@@ -51,7 +51,19 @@ Polinomio multiplicar(const Polinomio& a,const Polinomio& b){
             p.coeficiente[i+j]=p.coeficiente[i+j]+a.coeficiente[i]*b.coeficiente[j];
         }
     }
-    return p;
+    Polinomio r;
+    r.grado=p.grado+c.grado;
+    r.coeficiente=new double[p.grado+1];
+    for(int i=0;i<=p.grado;i++){
+        r.coeficiente[i]=0;
+    }
+    for(int i=0;i<=p.grado;i++){
+        for(int j=0;j<=c.grado;j++){
+            r.coeficiente[i+j]=r.coeficiente[i+j]+p.coeficiente[i]*c.coeficiente[j];
+        }
+    }
+    delete[] p.coeficiente;
+    return r;
 }
 void liberarMemoria(Polinomio& p){
     delete[] p.coeficiente;
@@ -85,15 +97,13 @@ int main(){
     cout<<"Suma de los tres polinomios: ";
     mostrarPolinomio(s);
     cout<<endl;
-    Polinomio p1=multiplicar(a,b);
-    Polinomio p2=multiplicar(p1,c);
+    Polinomio p=multiplicar(a,b,c);
     cout<<"Producto de los tres polinomios: ";
-    mostrarPolinomio(p2);
+    mostrarPolinomio(p);
     liberarMemoria(a);
     liberarMemoria(b);
     liberarMemoria(c);
     liberarMemoria(s);
-    liberarMemoria(p1);
-    liberarMemoria(p2);
+    liberarMemoria(p);
     return 0;
 }
