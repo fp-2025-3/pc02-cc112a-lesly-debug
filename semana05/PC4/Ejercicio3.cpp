@@ -15,7 +15,7 @@ int my_strlen(const char* cadena){
     return contador;
 }
 void my_strcpy(char* destino,const char* origen){
-    while(*destino!='\0'){
+    while(*origen!='\0'){
         *destino=*origen;
         destino=destino+1;
         origen=origen+1;
@@ -33,7 +33,7 @@ Producto crearProducto(int codigo,const char* nombre,double precio,int stock){
 }
 Producto* crearInventario(int n){
     Producto* p=new Producto[n];
-    const char nombres[][5]={"Teclado","Mouse","Monitor","Laptop","Impresora"};
+    const char* nombres[]={"Teclado","Mouse","Monitor","Laptop","Impresora"};
     for(int i=0;i<n;i++){
         p[i]=crearProducto(100+i,nombres[i],10.5*(1+i),5*(i+1));
     }
@@ -49,8 +49,9 @@ Producto* buscarProducto(Producto* inventario,int n,int codigoBuscado){
 }
 void liberarInventario(Producto* inventario,int n){
     for(int i=0;i<n;i++){
-        delete[] inventario;
+        delete[] inventario[i].nombre;
     }
+    delete[] inventario;
 }
 int main(){
     Producto* inventario=crearInventario(5);
