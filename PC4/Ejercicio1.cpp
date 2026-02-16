@@ -53,7 +53,7 @@ Polinomio multiplicar(const Polinomio& a,const Polinomio& b,const Polinomio& c){
     }
     Polinomio r;
     r.grado=p.grado+c.grado;
-    r.coeficiente=new double[p.grado+1];
+    r.coeficiente=new double[r.grado+1];
     for(int i=0;i<=p.grado;i++){
         r.coeficiente[i]=0;
     }
