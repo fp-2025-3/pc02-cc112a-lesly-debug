@@ -14,6 +14,7 @@ void escribirArchivo(double* numVenta,const string& nombreArchivo){
     double menor=0; 
     double promedio;
     for(int i=0;i<7;i++){
+        cout<<"Ingrese la venta del dia "<<i+1<<": ";
         cin>>numVenta[i];
         archivo<<numVenta[i]<<endl;
         total=total+numVenta[i];
