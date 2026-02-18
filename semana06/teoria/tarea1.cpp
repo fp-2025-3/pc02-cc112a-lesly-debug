@@ -3,7 +3,7 @@
 #include<string>
 using namespace std;
 struct Estudiante{
-    char* nombre;
+    char nombre[50];
     int nota;
 };
 void escribirArchivo(const string& nombreArchivo,const string& nombre,int nota){
@@ -59,6 +59,21 @@ void leerBinario(const string& nombreArchivo){
     }
     archivo.close();
 }
+void leerMostrarAprobados(const string& nombreArchivo){
+    ifstream archivo(nombreArchivo,ios::binary);
+    if(!archivo){
+        cerr<<"Error al abrir el archivo.\n";
+        return;
+    }
+    Estudiante e;
+    cout<<"\nEstudiantes aprobados:\n";
+    while(archivo.read((char*)&e,sizeof(Estudiante))){
+        if(e.nota>=10){
+            cout<<e.nombre<<"--"<<e.nota<<endl;
+        }
+    }
+    archivo.close();
+}
 int main(){
     string nombreArchivo="notas.txt";
     escribirArchivo(nombreArchivo,"Juan",17);
@@ -76,6 +91,7 @@ int main(){
     escribirBinario(archivoBinario,"Pedro",11);
     escribirBinario(archivoBinario,"Maria",8);
     cout<<"\nContenido del archivo binario\n";
-    leerBinario(archivoBinario)
+    leerBinario(archivoBinario);
+    leerMostrarAprobados(archivoBinario);
     return 0;
 }
