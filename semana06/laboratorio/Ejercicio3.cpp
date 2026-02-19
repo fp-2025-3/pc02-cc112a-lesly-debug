@@ -16,7 +16,7 @@ int buscarproductoPorID(const char* nombreArchivo,int Idbuscar){
     Producto p;
     int posicion=0;
     while(archivo.read((char*)&p,sizeof(Producto))){
-        if(p.id==Idbuscar){
+        if(p.id==Idbuscar&&p.activo){
             archivo.close();
             return posicion;
         }
@@ -31,6 +31,7 @@ void registrarProducto(const char* nombreArchivo){
     cin>>p.id;
     if(buscarproductoPorID(nombreArchivo,p.id)!=-1){
         cout<<"Error, el ID ya existe.\n";
+        return;
     }
     cin.ignore();
     cout<<"Ingrese el nombre: ";
@@ -128,6 +129,7 @@ double calcularValorInventario(const char* nombreArchivo){
             total=total+p.precio*p.stock;
         }
     }
+    archivo.close();
     return total;
 }
 int main(){
