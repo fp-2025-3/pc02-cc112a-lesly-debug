@@ -28,6 +28,8 @@ BUILD_DIR := build
 NORMAL_DIR := $(BUILD_DIR)/normal
 DEBUG_DIR  := $(BUILD_DIR)/debug
 ASAN_DIR   := $(BUILD_DIR)/asan
+INPUT_DIR  := input
+OUTPUT_DIR := output
 
 .PHONY: all normal debug asan valgrind clean
 
@@ -56,15 +58,21 @@ endif
 
 # Reglas de compilacion
 $(NORMAL_DIR)/%$(EXEEXT): %.cpp
-	$(MKDIR) $(NORMAL_DIR)
+	@$(MKDIR) $(NORMAL_DIR)
+	@$(MKDIR) $(INPUT_DIR)
+	@$(MKDIR) $(OUTPUT_DIR)
 	$(CXX) $(BASE_FLAGS) $< -o $@
 
 $(DEBUG_DIR)/%$(EXEEXT): %.cpp
-	$(MKDIR) $(DEBUG_DIR)
+	@$(MKDIR) $(DEBUG_DIR)
+	@$(MKDIR) $(INPUT_DIR)
+	@$(MKDIR) $(OUTPUT_DIR)
 	$(CXX) $(BASE_FLAGS) -g -O0 $< -o $@
 
 $(ASAN_DIR)/%$(EXEEXT): %.cpp
-	$(MKDIR) $(ASAN_DIR)
+	@$(MKDIR) $(ASAN_DIR)
+	@$(MKDIR) $(INPUT_DIR)
+	@$(MKDIR) $(OUTPUT_DIR)
 	$(CXX) $(BASE_FLAGS) -fsanitize=address -fno-omit-frame-pointer -g -O1 $< -o $@
 
 
