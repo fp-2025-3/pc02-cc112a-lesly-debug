@@ -113,7 +113,7 @@ void eliminarProducto(const char* nombreArchivo,int id){
     archivo.seekp(posicion*sizeof(Producto),ios::beg);
     archivo.write((char*)&p,sizeof(Producto));
     archivo.close();
-    cout<<"Precio modificado correctamente.\n";
+    cout<<"Producto eliminado correctamente.\n";
 }
 double calcularValorInventario(const char* nombreArchivo){
     ifstream archivo(nombreArchivo,ios::binary);
