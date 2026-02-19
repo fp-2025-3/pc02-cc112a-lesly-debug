@@ -40,6 +40,6 @@ void escribirArchivo(double* numVenta,const string& nombreArchivo){
 }
 int main(){
     double numVenta[7];
-    escribirArchivo(numVenta,"ventas.txt");
+    escribirArchivo(numVenta,"output/ventas.txt");
     return 0;
 }
