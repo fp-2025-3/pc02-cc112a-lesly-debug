@@ -35,7 +35,7 @@ void leerArchivo(const char* nombreArchivo){
 }
 void mostrarRango(const char* nombreArchivo,double min,double max){
     ifstream archivo;
-    archivo.open(nombreArchivo);
+    archivo.open(nombreArchivo,ios::binary);
     if(!archivo){
         cerr<<"Error al abrir el archivo.\n";
         return;
