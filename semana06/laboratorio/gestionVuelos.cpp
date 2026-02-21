@@ -102,6 +102,33 @@ void reservarAsiento(Vuelo& vuelo){
     vuelo.listaReservas=nuevo;
     cout<<"Reserva realizada correctamente.\n";
 }
+void cancelarReservar(Vuelo& vuelo){
+    int dni;
+    cout<<"Ingrese el DNI: ";
+    cin>>dni;
+    NodoReserva* aux=vuelo.listaReservas;
+    NodoReserva* padre=nullptr;
+    while(aux!=nullptr){
+        if(aux->pasajero.dni==dni){//Mientras no coincide, padre sigue el aux, aux avanza
+            break;
+        }
+        padre=aux;
+        aux=aux->siguiente;//si nunca coincide aux=nullptr y el bucle termina
+    }
+    if(aux==nullptr){
+        cout<<"Reserva no encontrada.\n";
+        return;
+    }
+    delete vuelo.asientos[aux->numeroAsiento-1].pasajero;
+    vuelo.asientos[aux->numeroAsiento-1].pasajero=nullptr;
+    vuelo.asientos[aux->numeroAsiento-1].reservado=false;
+    if(padre==nullptr){
+        vuelo.listaReservas=aux->siguiente;
+    }else{
+        padre->siguiente=aux->siguiente;
+    }
+    delete aux;
+}
 void liberarMemoria(Vuelo& vuelo){
     for(int i=0;i<vuelo.capacidad;i++){
         if(vuelo.asientos[i].pasajero!=nullptr){
@@ -119,8 +146,34 @@ void liberarMemoria(Vuelo& vuelo){
 int main(){
     Vuelo vuelo;
     crearVuelo(vuelo);
-    reservarAsiento(vuelo);
-    mostrarMapaAsientos(vuelo);
+    int opcion;
+    do{
+        cout<<"\n=====MENU=====\n";
+        cout<<"1. Reservar asiento.\n";
+        cout<<"2. Cancelar reserva.\n";
+        cout<<"3. Mostrar mapa de asientos\n";
+        cout<<"4. Salir\n";
+        cin>>opcion;
+        cin.ignore();
+        switch(opcion){
+            case 1:{
+                reservarAsiento(vuelo);
+                break;
+            }
+            case 2:{
+                cancelarReservar(vuelo);
+                break;
+            }
+            case 3:{
+                mostrarMapaAsientos(vuelo);
+                break;
+            }
+            case 4:{
+                cout<<"Saliendo del programa...\n";
+                break;
+            }
+        }
+    }while(opcion!=4);
     liberarMemoria(vuelo);
     return 0;
 }
