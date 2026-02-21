@@ -84,7 +84,7 @@ void reservarAsiento(Vuelo& vuelo){
     }
     NodoReserva* aux=vuelo.listaReservas;
     while(aux!=nullptr){
-        if(aux->pasajero.dni==dni){
+        if(aux->pasajero.dni==dni||my_strcmp(aux->pasajero.nombre,nombre)==0){
             cout<<"Pasajero ya registrado.\n";
             return;
         }
@@ -102,11 +102,25 @@ void reservarAsiento(Vuelo& vuelo){
     vuelo.listaReservas=nuevo;
     cout<<"Reserva realizada correctamente.\n";
 }
+void liberarMemoria(Vuelo& vuelo){
+    for(int i=0;i<vuelo.capacidad;i++){
+        if(vuelo.asientos[i].pasajero!=nullptr){
+            delete vuelo.asientos[i].pasajero;
+        }
+    }
+    NodoReserva* actual=vuelo.listaReservas;
+    while(actual!=nullptr){
+        NodoReserva* temp=actual;
+        actual=actual->siguiente;
+        delete temp;
+    }
+    delete[] vuelo.asientos;
+}
 int main(){
     Vuelo vuelo;
     crearVuelo(vuelo);
     reservarAsiento(vuelo);
     mostrarMapaAsientos(vuelo);
-    delete[] vuelo.asientos;
+    liberarMemoria(vuelo);
     return 0;
 }
