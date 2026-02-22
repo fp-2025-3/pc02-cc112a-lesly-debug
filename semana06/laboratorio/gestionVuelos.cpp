@@ -190,7 +190,9 @@ void generarReporte(Vuelo& vuelo){
     char nombreArchivo[50]="reporte_";
     my_strcpy(nombreArchivo+8,vuelo.codigo);
     my_strcpy(nombreArchivo+8+my_strlen(vuelo.codigo),".txt");
-    ofstream archivo(nombreArchivo);
+    char rutaCompleta[100]="output/";
+    my_strcpy(rutaCompleta+7,nombreArchivo);
+    ofstream archivo(rutaCompleta);
     if(!archivo){
         cerr<<"Error al abrir el archivo.\n";
         return;
