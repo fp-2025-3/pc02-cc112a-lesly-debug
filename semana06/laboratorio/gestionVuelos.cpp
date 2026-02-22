@@ -22,6 +22,11 @@ struct Vuelo{
     Asiento* asientos;
     NodoReserva* listaReservas;
 };
+struct RegistroBinario{
+    int dni;
+    char nombre[50];
+    int asiento;
+};
 void my_strcpy(char* destino,const char* origen){
     while(*origen!='\0'){
         *destino=*origen;
@@ -36,6 +41,14 @@ int my_strcmp(const char* a,const char* b){
         b=b+1;
     }
     return *a-*b;
+}
+int my_strlen(const char* cadena){
+    int contador=0;
+    while(*cadena!='\0'){
+        cadena=cadena+1;
+        contador=contador+1;
+    }
+    return contador;
 }
 void crearVuelo(Vuelo& vuelo){
     cout<<"Ingrese el codigo del vuelo: ";
@@ -135,8 +148,9 @@ void mostrarListaPasajero(Vuelo& vuelo){
         cout<<"No hay reservas.\n";
         return;
     }
+    cout<<"\n---LISTA DE PASAJEROS-----\n";
     while(aux!=nullptr){
-        cout<<"DNI: "<<aux->pasajero.dni<<" - Nombre: "<<aux->pasajero.nombre<<endl;
+        cout<<"DNI: "<<aux->pasajero.dni<<" - Nombre: "<<aux->pasajero.nombre<<" - Asiento: "<<aux->numeroAsiento<<endl;
         aux=aux->siguiente;
     }
 }
@@ -149,7 +163,7 @@ void mostrarEstadisticas(Vuelo& vuelo){
             contadorLibres=contadorLibres+1;
         }
     }
-    double ocupacion=(contadorOcupados*100)/vuelo.capacidad;
+    double ocupacion=(contadorOcupados*100.0)/vuelo.capacidad;
     cout<<"-----ESTADISTICAS DEL VUELO-----\n";
     cout<<"Total de asientos: "<<vuelo.capacidad<<endl;
     cout<<"Asientos ocupados: "<<contadorOcupados<<endl;
@@ -172,6 +186,55 @@ void liberarMemoria(Vuelo& vuelo){
     vuelo.listaReservas=nullptr;
     vuelo.asientos=nullptr;
 }
+void generarReporte(Vuelo& vuelo){
+    char nombreArchivo[50]="reporte_";
+    my_strcpy(nombreArchivo+8,vuelo.codigo);
+    my_strcpy(nombreArchivo+8+my_strlen(vuelo.codigo),".txt");
+    ofstream archivo(nombreArchivo);
+    if(!archivo){
+        cerr<<"Error al abrir el archivo.\n";
+        return;
+    }
+    int contadorOcupados=0;
+    for(int i=0;i<vuelo.capacidad;i++){
+        if(vuelo.asientos[i].reservado){
+            contadorOcupados=contadorOcupados+1;
+        }
+    }
+    int libres=vuelo.capacidad-contadorOcupados;
+    double ocupacion=(contadorOcupados*100.0)/vuelo.capacidad;
+    archivo<<"***REPORTE DE VUELO***\n";
+    archivo<<"Codigo: "<<vuelo.codigo<<endl;
+    archivo<<"Destino: "<<vuelo.destino<<endl;
+    archivo<<"Capacidad: "<<vuelo.capacidad<<endl;
+    archivo<<"Ocupados: "<<contadorOcupados<<endl;
+    archivo<<"Libres: "<<libres<<endl;
+    archivo<<"Porcentaje: "<<ocupacion<<endl;
+    archivo.close();
+    cout<<"Reporte generado correctamente.\n";
+}
+void generarReporteBinario(Vuelo& vuelo){
+    char nombreArchivo[50]="reservas_";
+    my_strcpy(nombreArchivo+9,vuelo.codigo);
+    my_strcpy(nombreArchivo+9+my_strlen(vuelo.codigo),".dat");
+    fstream archivo;
+    archivo.open(nombreArchivo,ios::binary|ios::out);
+    if(!archivo){
+        cerr<<"Error al abrir el archivo.\n";
+        return;
+    }
+    RegistroBinario registro;
+    for(int i=0;i<vuelo.capacidad;i++){
+        if(vuelo.asientos[i].reservado){
+            registro.dni=vuelo.asientos[i].pasajero->dni;
+            my_strcpy(registro.nombre,vuelo.asientos[i].pasajero->nombre);
+            registro.asiento=vuelo.asientos[i].numero;
+            archivo.write((char*)&registro,sizeof(RegistroBinario));
+        }
+    }
+    archivo.close();
+    cout<<"Reporte binario generado correctamente.\n";
+}
 int main(){
     Vuelo vuelo;
     crearVuelo(vuelo);
@@ -182,7 +245,9 @@ int main(){
         cout<<"2. Cancelar reserva.\n";
         cout<<"3. Mostrar mapa de asientos\n";
         cout<<"4. Mostrar estadisticas.\n";
-        cout<<"5. Salir.\n";
+        cout<<"5. Generar reporte txt.\n";
+        cout<<"6. Generar reporte bin.\n";
+        cout<<"7. Salir.\n";
         cin>>opcion;
         cin.ignore();
         switch(opcion){
@@ -203,11 +268,19 @@ int main(){
                 break;
             }
             case 5:{
+                generarReporte(vuelo);
+                break;
+            }
+            case 6:{
+                generarReporteBinario(vuelo);
+                break;
+            }
+            case 7:{
                 cout<<"Saliendo del programa...\n";
                 break;
             }
         }
-    }while(opcion!=5);
+    }while(opcion!=7);
     liberarMemoria(vuelo);
     return 0;
 }
