@@ -129,6 +129,17 @@ void cancelarReservar(Vuelo& vuelo){
     }
     delete aux;
 }
+void mostrarListaPasajero(Vuelo& vuelo){
+    NodoReserva* aux=vuelo.listaReservas;
+    if(aux==nullptr){
+        cout<<"No hay reservas.\n";
+        return;
+    }
+    while(aux!=nullptr){
+        cout<<"DNI: "<<aux->pasajero.dni<<" - Nombre: "<<aux->pasajero.nombre<<endl;
+        aux=aux->siguiente;
+    }
+}
 void liberarMemoria(Vuelo& vuelo){
     for(int i=0;i<vuelo.capacidad;i++){
         if(vuelo.asientos[i].pasajero!=nullptr){
@@ -142,6 +153,8 @@ void liberarMemoria(Vuelo& vuelo){
         delete temp;
     }
     delete[] vuelo.asientos;
+    vuelo.listaReservas=nullptr;
+    vuelo.asientos=nullptr;
 }
 int main(){
     Vuelo vuelo;
