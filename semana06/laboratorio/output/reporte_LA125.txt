@@ -1,0 +1,7 @@
+***REPORTE DE VUELO***
+Codigo: LA125
+Destino: Chile
+Capacidad: 4
+Ocupados: 1
+Libres: 3
+Porcentaje: 25

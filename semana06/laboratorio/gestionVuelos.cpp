@@ -7,6 +7,7 @@ struct Pasajero{
 };
 struct Asiento{
     int numero;
+    char clase;
     bool reservado;
     Pasajero* pasajero;
 };
@@ -62,8 +63,35 @@ void crearVuelo(Vuelo& vuelo){
         vuelo.asientos[i].numero=i+1;
         vuelo.asientos[i].reservado=false;
         vuelo.asientos[i].pasajero=nullptr;
+        if(i<vuelo.capacidad/2){
+            vuelo.asientos[i].clase='E';
+        }else{
+            vuelo.asientos[i].clase='P';
+        }
     }
     vuelo.listaReservas=nullptr;
+}
+void ordenarPorDNI(Vuelo& vuelo){
+    if(!vuelo.listaReservas){
+        return;
+    }
+    bool intercambio;
+    do{
+        intercambio=false;
+        NodoReserva* actual=vuelo.listaReservas;
+        while(actual->siguiente){
+            if(actual->pasajero.dni>actual->siguiente->pasajero.dni){
+                Pasajero tempPas=actual->pasajero;
+                int tempAs=actual->numeroAsiento;
+                actual->pasajero=actual->siguiente->pasajero;
+                actual->numeroAsiento=actual->siguiente->numeroAsiento;
+                actual->siguiente->pasajero=tempPas;
+                actual->siguiente->numeroAsiento=tempAs;
+                intercambio=true;
+            }
+            actual=actual->siguiente;
+        }
+    }while(intercambio);
 }
 void mostrarMapaAsientos(Vuelo& vuelo){
     cout<<"Vuelo: "<<vuelo.codigo<<" - "<<vuelo.destino<<endl;
@@ -171,20 +199,22 @@ void mostrarEstadisticas(Vuelo& vuelo){
     cout<<"Porcentaje de ocupacion: "<<ocupacion<<"%"<<endl;
 }
 void liberarMemoria(Vuelo& vuelo){
-    for(int i=0;i<vuelo.capacidad;i++){
-        if(vuelo.asientos[i].pasajero!=nullptr){
-            delete vuelo.asientos[i].pasajero;
+    if(vuelo.asientos!=nullptr){
+        for(int i=0;i<vuelo.capacidad;i++){
+            if(vuelo.asientos[i].pasajero!=nullptr){
+                delete vuelo.asientos[i].pasajero;
+            }
         }
+        delete[] vuelo.asientos;
+        vuelo.asientos=nullptr;
     }
+
     NodoReserva* actual=vuelo.listaReservas;
     while(actual!=nullptr){
         NodoReserva* temp=actual;
         actual=actual->siguiente;
         delete temp;
     }
-    delete[] vuelo.asientos;
-    vuelo.listaReservas=nullptr;
-    vuelo.asientos=nullptr;
 }
 void generarReporte(Vuelo& vuelo){
     char nombreArchivo[50]="reporte_";
@@ -237,52 +267,115 @@ void generarReporteBinario(Vuelo& vuelo){
     archivo.close();
     cout<<"Reporte binario generado correctamente.\n";
 }
+void cargarReservas(Vuelo& vuelo){
+    char nombre[50]="output/reservas_";
+    my_strcpy(nombre+16,vuelo.codigo);
+    my_strcpy(nombre+16+my_strlen(vuelo.codigo),".dat");
+    fstream archivo(nombre,ios::binary|ios::in);
+    if(!archivo){
+        cerr<<"Error al abrir el archivo.\n";
+        return;
+    }
+    RegistroBinario registro;
+    while(archivo.read((char*)&registro,sizeof(RegistroBinario))){
+        Pasajero* nuevoPasajero=new Pasajero;
+        nuevoPasajero->dni=registro.dni;
+        my_strcpy(nuevoPasajero->nombre,registro.nombre);
+        int pos=registro.asiento-1;
+        vuelo.asientos[pos].reservado=true;
+        vuelo.asientos[pos].pasajero=nuevoPasajero;
+        NodoReserva* nuevoNodo=new NodoReserva;
+        nuevoNodo->pasajero.dni=registro.dni;
+        my_strcpy(nuevoNodo->pasajero.nombre,registro.nombre);
+        nuevoNodo->numeroAsiento=registro.asiento;
+        nuevoNodo->siguiente=vuelo.listaReservas;
+        vuelo.listaReservas=nuevoNodo;
+    }
+    archivo.close();
+}
+int buscarVuelo(Vuelo* vuelos,int n,const char* codigo){
+    for(int i=0;i<n;i++){
+        if(my_strcmp(vuelos[i].codigo,codigo)==0){
+            return i;
+        }
+    }
+    return -1;
+}
 int main(){
-    Vuelo vuelo;
-    crearVuelo(vuelo);
+    Vuelo* vuelos=nullptr;
+    int cantidadVuelos=0;
     int opcion;
     do{
         cout<<"\n=====MENU=====\n";
-        cout<<"1. Reservar asiento.\n";
-        cout<<"2. Cancelar reserva.\n";
-        cout<<"3. Mostrar mapa de asientos\n";
-        cout<<"4. Mostrar estadisticas.\n";
-        cout<<"5. Generar reporte txt.\n";
-        cout<<"6. Generar reporte bin.\n";
-        cout<<"7. Salir.\n";
+        cout<<"1. Crear vuelo.\n";
+        cout<<"2. Reservar asiento.\n";
+        cout<<"3. Cancelar reserva.\n";
+        cout<<"4. Mostrar mapa de asientos\n";
+        cout<<"5. Mostrar estadisticas.\n";
+        cout<<"6. Generar reporte txt.\n";
+        cout<<"7. Generar reporte bin.\n";
+        cout<<"8. Salir.\n";
         cin>>opcion;
         cin.ignore();
-        switch(opcion){
-            case 1:{
-                reservarAsiento(vuelo);
-                break;
+        if(opcion==1){
+            Vuelo* nuevo=new Vuelo[cantidadVuelos+1];
+            for(int i=0;i<cantidadVuelos;i++){
+                nuevo[i]=vuelos[i];
             }
+            crearVuelo(nuevo[cantidadVuelos]);
+            cargarReservas(nuevo[cantidadVuelos]);
+            delete[] vuelos;
+            vuelos=nuevo;
+            cantidadVuelos=cantidadVuelos+1;
+            cout<<"Vuelo creado exitosamente.\n";
+        }else if(opcion>=2&&opcion<=7){
+            if(cantidadVuelos==0){
+                cout<<"No hay vuelos registrados.\n";
+                continue;
+            }
+            char codigoBuscado[10];
+            cout<<"Ingrese codigo del vuelo: ";
+            cin.getline(codigoBuscado,10);
+            int posicion=buscarVuelo(vuelos,cantidadVuelos,codigoBuscado);
+            if(posicion==-1){
+                cout<<"Vuelo no encontrado.\n";
+                continue;
+            }
+            switch(opcion){
             case 2:{
-                cancelarReservar(vuelo);
+                reservarAsiento(vuelos[posicion]);
                 break;
             }
             case 3:{
-                mostrarMapaAsientos(vuelo);
+                cancelarReservar(vuelos[posicion]);
                 break;
             }
             case 4:{
-                mostrarEstadisticas(vuelo);
+                mostrarMapaAsientos(vuelos[posicion]);
                 break;
             }
             case 5:{
-                generarReporte(vuelo);
+                mostrarEstadisticas(vuelos[posicion]);
                 break;
             }
             case 6:{
-                generarReporteBinario(vuelo);
+                generarReporte(vuelos[posicion]);
                 break;
             }
             case 7:{
+                generarReporteBinario(vuelos[posicion]);
+                break;
+            }
+            case 8:{
                 cout<<"Saliendo del programa...\n";
                 break;
             }
         }
-    }while(opcion!=7);
-    liberarMemoria(vuelo);
+    }
+    }while(opcion!=8);
+    for(int i=0;i<cantidadVuelos;i++){
+        liberarMemoria(vuelos[i]);
+    }
+    delete[] vuelos;
     return 0;
 }
