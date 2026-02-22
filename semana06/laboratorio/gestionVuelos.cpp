@@ -140,6 +140,22 @@ void mostrarListaPasajero(Vuelo& vuelo){
         aux=aux->siguiente;
     }
 }
+void mostrarEstadisticas(Vuelo& vuelo){
+    int contadorOcupados=0,contadorLibres=0;
+    for(int i=0;i<vuelo.capacidad;i++){
+        if(vuelo.asientos[i].reservado){
+            contadorOcupados=contadorOcupados+1;
+        }else{
+            contadorLibres=contadorLibres+1;
+        }
+    }
+    double ocupacion=(contadorOcupados*100)/vuelo.capacidad;
+    cout<<"-----ESTADISTICAS DEL VUELO-----\n";
+    cout<<"Total de asientos: "<<vuelo.capacidad<<endl;
+    cout<<"Asientos ocupados: "<<contadorOcupados<<endl;
+    cout<<"Asientos libres: "<<contadorLibres<<endl;
+    cout<<"Porcentaje de ocupacion: "<<ocupacion<<"%"<<endl;
+}
 void liberarMemoria(Vuelo& vuelo){
     for(int i=0;i<vuelo.capacidad;i++){
         if(vuelo.asientos[i].pasajero!=nullptr){
@@ -165,7 +181,8 @@ int main(){
         cout<<"1. Reservar asiento.\n";
         cout<<"2. Cancelar reserva.\n";
         cout<<"3. Mostrar mapa de asientos\n";
-        cout<<"4. Salir\n";
+        cout<<"4. Mostrar estadisticas.\n";
+        cout<<"5. Salir.\n";
         cin>>opcion;
         cin.ignore();
         switch(opcion){
@@ -182,11 +199,15 @@ int main(){
                 break;
             }
             case 4:{
+                mostrarEstadisticas(vuelo);
+                break;
+            }
+            case 5:{
                 cout<<"Saliendo del programa...\n";
                 break;
             }
         }
-    }while(opcion!=4);
+    }while(opcion!=5);
     liberarMemoria(vuelo);
     return 0;
 }
