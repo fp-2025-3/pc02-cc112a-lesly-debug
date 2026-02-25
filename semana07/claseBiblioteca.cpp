@@ -1,5 +1,4 @@
 #include<iostream>
-#include<cstring>
 #include<string>
 using namespace std;
 class Biblioteca{//Implementar herencia a esta clase
@@ -8,7 +7,7 @@ class Biblioteca{//Implementar herencia a esta clase
     string titulo;
     bool prestado;
     public:
-    Libro(int c=0,char* t=" "){
+    Biblioteca(int c=0,const char* t=""){
         if(c<0){
             cout<<"Codigo invalido\n";
         }
@@ -33,3 +32,8 @@ class Biblioteca{//Implementar herencia a esta clase
         }
     }
 };
+int main(){
+    Biblioteca lib(1,"El Principito");
+    lib.mostrar();
+    return 0;
+}

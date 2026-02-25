@@ -12,25 +12,25 @@ struct Usuario{
     string nombres;
     int prestamos;
 };
-int my_strcmp(char* a,const char* b){
-    while(*a='\0'&&*b!='\0'){
+int my_strcmp(const char* a,const char* b){
+    while(*a!='\0'&&*b!='\0'&&*a==*b){
         a=a+1;
         b=b+1;
     }
     return *a-*b;
 }
-void registrarLibro(Libro& libro,int& n){//(Libro libros[],int& n)
+void registrarLibro(Libro libros[],int& n){
     if(n>=MAX_LIBROS){
         cout<<"Capacidad maxima alcanzada.";
         return;
     }
     cout<<"-----REGISTRO DE LIBRO-----\n";
     cout<<"Codigo: ";
-    cin>>libro.codigo;
+    cin>>libros[n].codigo;
     cout<<"Titulo: ";
     cin.ignore();
-    cin.getline(libro.titulo,50);
-    libro.prestado=false;
+    cin.getline(libros[n].titulo,50);
+    libros[n].prestado=false;
     n=n+1;
 }
 int buscarLibro(Libro libros[],int n,int codigo){
@@ -51,45 +51,88 @@ int encontrarLibro(Libro libros[],int n,int codigo){
     }
     return -1;
 }
-void prestarLibro(Libro libro[],int n,int codigo){//(Libro libros[],int& n)
-    int pos=buscarLibro(libro,n,codigo);
-    if(pos!=-1){
-        cout<<"Libro: "<<libro[pos].titulo<<" | Estado: ";
-        if(!libro[pos].prestado){
-            libro[pos].prestado=true;
-            cout<<"DISPONIBLE\n";
+void prestarLibro(Libro libros[],int n,int codigo){
+    int pos=encontrarLibro(libros,n,codigo);
+    if(pos==-1){
+        cout<<"Libro no existe.\n";
+    }else{
+        if(libros[pos].prestado){
+            cout<<"Libro no disponible.\n";
+        }else{
+            libros[pos].prestado=true;
+            cout<<"Libro: "<<libros[pos].titulo<<endl;
             cout<<"Libro prestado correctamente.\n";
         }
-    }else{
-        cout<<"PRESTADO: Libro no disponible.\n";
     }
 }
 void devolverLibro(Libro libros[],int n){
-    int cod;
+    int codigo;
     char nombre[50];
     cout<<"Ingrese el codigo: ";
-    cin>>cod;
+    cin>>codigo;
     cout<<"Ingrese el titulo: ";
     cin.ignore();
     cin.getline(nombre,50);
+    int pos=encontrarLibro(libros,n,codigo);
+    if(pos==-1){
+        cout<<"Libro no registrado.\n";
+        return;
+    }
+    if(!libros[pos].prestado){
+        cout<<"El libro no fue prestado.\n";
+        return;
+    }
+    if(my_strcmp(libros[pos].titulo,nombre)==0){
+        libros[pos].prestado=false;
+        cout<<"Libro devuelto correctamente.\n";
+    }else{
+        cout<<"Datos incorrectos.\n";
+    }
+}
+void mostrarLibros(Libro libros[], int n){
+    if(n==0){
+        cout << "No hay libros registrados.\n";
+        return;
+    }
+    cout<<"---- LISTA DE LIBROS ----\n";
     for(int i=0;i<n;i++){
+        cout<<libros[i].codigo<<" - "<<libros[i].titulo<<" - ";
         if(libros[i].prestado){
-            if(libros[i].codigo==cod&&my_strcmp(libros[i].titulo,nombre)>0){
-                libros[i].prestado=false;
-                cout<<"Libro devuelto correctamente.\n";
-                return;
-            }
+            cout<<"Prestado\n";
+        }else{
+            cout<<"Disponible\n";
         }
     }
-    cout<<"Libro no registrado.\n";
 }
-void guardarEnArchivo(Libro libros[],int n);
-void cargarDesdeArchivo(Libro libros[],int n);
+void guardarEnArchivo(Libro libros[],int n){
+    ofstream archivo("libros.dat",ios::binary);
+    if(!archivo){
+        cerr<<"Error al abrir el archivo para guardar.\n";
+        return;
+    }
+    archivo.write((char*)&n,sizeof(int));
+    archivo.write((char*)libros,sizeof(Libro)*n);
+    archivo.close();
+    cout<<"Datos guardados correctamente.\n";
+}
+void cargarDesdeArchivo(Libro libros[], int& n){
+    ifstream archivo("libros.dat",ios::binary);
+    if(!archivo){
+        cerr<<"Error al abrir el archivo.\n";
+        n=0;
+        return;
+    }
+    archivo.read((char*)&n,sizeof(int));
+    archivo.read((char*)libros,sizeof(Libro)*n);
+    archivo.close();
+    cout<<"Datos cargados correctamente.\n";
+}
 int main(){
     Libro libros[MAX_LIBROS];
     int cantidad=0;
     int codigo;
     int opcion;
+    cargarDesdeArchivo(libros, cantidad);
     do{
         cout<<"====== MENU DE OPCIONES ======\n";
         cout<<"1. Registrar libro."<<endl;
@@ -101,7 +144,7 @@ int main(){
         cin>>opcion;
         switch(opcion){
             case 1:{
-                registrarLibro(libros[cantidad],cantidad);
+                registrarLibro(libros,cantidad);
                 break;
             }
             case 2:{
@@ -118,7 +161,28 @@ int main(){
                 devolverLibro(libros,cantidad);
                 break;
             }
+            case 4:{
+                cout<<"Ingrese el codigo: ";
+                cin>>codigo;
+                int pos = encontrarLibro(libros, cantidad, codigo);
+                if(pos == -1){
+                    cout << "Libro no registrado.\n";
+                }else{
+                    cout << libros[pos].codigo << " - "<< libros[pos].titulo << " - ";
+                    if(libros[pos].prestado){
+                        cout<<"Prestado\n";
+                    }else{
+                        cout<<"Disponible.\n";
+                    }
+                }
+                break;
+            }
+            case 5:{
+                mostrarLibros(libros,cantidad);
+                break;
+            }
             case 6:{
+                guardarEnArchivo(libros, cantidad);
                 cout<<"Saliendo...";
                 break;
             }

@@ -1,3 +1,4 @@
+#ifndef LIBRO.H
 #define LIBRO.H
 #include<string>
 using namespace std;
@@ -8,6 +9,13 @@ class Libro{
     int paginas;
     public:
     Libro();
-    Libro(string& t,string& a,int p);
+    Libro(const string& t,const string& a,int p);
     ~Libro();
+    string getTitulo() const;
+    string getAutor() const;
+    int getPaginas() const;
+    void setTitulo(string& t);
+    void setAutor(string& a);
+    void setPaginas(int p);
+    void mostrarInfo() const;
 };
