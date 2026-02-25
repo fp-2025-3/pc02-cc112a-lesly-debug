@@ -1,5 +1,5 @@
-#ifndef LIBRO.H
-#define LIBRO.H
+#ifndef LIBRO_H
+#define LIBRO_H
 #include<string>
 using namespace std;
 class Libro{
@@ -19,3 +19,4 @@ class Libro{
     void setPaginas(int p);
     void mostrarInfo() const;
 };
+#endif
