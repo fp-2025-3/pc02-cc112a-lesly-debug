@@ -1,5 +1,6 @@
 #include<iostream>
 #include<fstream>
+#include<iomanip>
 using namespace std;
 struct Venta{
     int idVenta;
@@ -17,13 +18,46 @@ int main(){
     }
     int numero;
     archivo.read((char*)&numero,sizeof(int));
-    cout<<"Numero total de registros: "<<numero<<endl;
-    Venta* v=new Venta[numero];
-    archivo.read((char*)v,numero*sizeof(Venta));
-    double suma=0;
+    Venta* ventas=new Venta[numero];
+    archivo.read((char*)ventas,numero*sizeof(Venta));
+    double montoTotal=0;
+    const int MAX=1000;
+    double totalVendedor[MAX]={0};
+    int totalProducto[MAX]={0};
     for(int i=0;i<numero;i++){
-        suma=suma+((double)v[i].cantidad*v[i].precioUnitario);
+        montoTotal=montoTotal+(ventas[i].cantidad*ventas[i].precioUnitario);
+        totalVendedor[ventas[i].idVendedor]=totalVendedor[ventas[i].idVendedor]+(ventas[i].cantidad*ventas[i].precioUnitario);
+        totalProducto[ventas[i].idProducto]=totalProducto[ventas[i].idProducto]+(ventas[i].cantidad*ventas[i].precioUnitario);
     }
-    cout<<"MONTO TOTAL VENDIDO:\nS/."<<suma<<endl;
+    int mejorVendedor=-1;
+    double mayorMonto=0;
+    for(int i=0;i<MAX;i++) {
+        if(totalVendedor[i]>mayorMonto) {
+            mayorMonto=totalVendedor[i];
+            mejorVendedor=i;
+        }
+    }
+    int mejorProducto=-1;
+    int mayorCantidad=0;
+    for(int i=0;i<MAX;i++) {
+        if(totalProducto[i]>mayorCantidad) {
+            mayorCantidad=totalProducto[i];
+            mejorProducto=i;
+        }
+    }
+    ofstream reporte("reporte.txt");
+    reporte<<fixed<<setprecision(2);
+    reporte<<"--- REPORTE GENERAL DE VENTAS ----"<<endl;
+    reporte<<"Total de registros: "<<numero<<endl;
+    reporte<<"MONTO TOTAL VENDIDO:"<<endl;
+    reporte<<"S/. " <<montoTotal<<endl;
+    reporte<<"---------------------------------------"<<endl;
+    reporte<<"VENDEDOR CON MAYOR RECAUDACIÓN:"<<endl;
+    reporte<<"ID Vendedor: "<<mejorVendedor<<endl;
+    reporte<<"Total vendido: S/. "<<mayorMonto<<endl;
+    reporte<<"---------------------------------------"<<endl;
+    reporte<<"PRODUCTO MÁS VENDIDO:\n";
+    reporte<<"ID Producto: "<<mejorProducto<<endl;
+    reporte<<"Total unidades: "<<mayorCantidad<<endl;
     return 0;
 }
