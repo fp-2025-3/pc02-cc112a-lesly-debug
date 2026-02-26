@@ -27,7 +27,7 @@ int main(){
     for(int i=0;i<numero;i++){
         montoTotal=montoTotal+(ventas[i].cantidad*ventas[i].precioUnitario);
         totalVendedor[ventas[i].idVendedor]=totalVendedor[ventas[i].idVendedor]+(ventas[i].cantidad*ventas[i].precioUnitario);
-        totalProducto[ventas[i].idProducto]=totalProducto[ventas[i].idProducto]+(ventas[i].cantidad*ventas[i].precioUnitario);
+        totalProducto[ventas[i].idProducto]=totalProducto[ventas[i].idProducto]+ventas[i].cantidad;
     }
     int mejorVendedor=-1;
     double mayorMonto=0;
@@ -59,5 +59,14 @@ int main(){
     reporte<<"PRODUCTO MÁS VENDIDO:\n";
     reporte<<"ID Producto: "<<mejorProducto<<endl;
     reporte<<"Total unidades: "<<mayorCantidad<<endl;
+    reporte<<"---------------------------------------"<<endl;
+    reporte<<"VENTAS SOSPECHOSAS (cantidad>100):"<<endl;
+    for(int i=0;i<numero;i++){
+        if(ventas[i].cantidad>100){
+            reporte<<"ID Venta: "<<ventas[i].idVenta<<" | ID Vendedor: "<<ventas[i].idVendedor<<" | ID Producto: "<<ventas[i].idProducto<<" | Cantidad: "<<ventas[i].cantidad<<endl;
+        }
+    }
+    archivo.close();
+    delete[] ventas;
     return 0;
 }

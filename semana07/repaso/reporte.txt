@@ -1,0 +1,79 @@
+--- REPORTE GENERAL DE VENTAS ----
+Total de registros: 200
+MONTO TOTAL VENDIDO:
+S/. 530221.02
+---------------------------------------
+VENDEDOR CON MAYOR RECAUDACIÓN:
+ID Vendedor: 9
+Total vendido: S/. 71382.93
+---------------------------------------
+PRODUCTO MÁS VENDIDO:
+ID Producto: 14
+Total unidades: 1114
+---------------------------------------
+VENTAS SOSPECHOSAS (cantidad>100):
+ID Venta: 3 | ID Vendedor: 10 | ID Producto: 17 | Cantidad: 109
+ID Venta: 7 | ID Vendedor: 3 | ID Producto: 3 | Cantidad: 102
+ID Venta: 8 | ID Vendedor: 2 | ID Producto: 5 | Cantidad: 146
+ID Venta: 9 | ID Vendedor: 10 | ID Producto: 9 | Cantidad: 129
+ID Venta: 10 | ID Vendedor: 5 | ID Producto: 14 | Cantidad: 118
+ID Venta: 11 | ID Vendedor: 10 | ID Producto: 6 | Cantidad: 117
+ID Venta: 16 | ID Vendedor: 9 | ID Producto: 17 | Cantidad: 127
+ID Venta: 24 | ID Vendedor: 1 | ID Producto: 11 | Cantidad: 123
+ID Venta: 28 | ID Vendedor: 8 | ID Producto: 17 | Cantidad: 128
+ID Venta: 31 | ID Vendedor: 9 | ID Producto: 4 | Cantidad: 143
+ID Venta: 34 | ID Vendedor: 1 | ID Producto: 3 | Cantidad: 116
+ID Venta: 36 | ID Vendedor: 5 | ID Producto: 12 | Cantidad: 101
+ID Venta: 39 | ID Vendedor: 1 | ID Producto: 18 | Cantidad: 130
+ID Venta: 40 | ID Vendedor: 4 | ID Producto: 18 | Cantidad: 135
+ID Venta: 42 | ID Vendedor: 2 | ID Producto: 19 | Cantidad: 147
+ID Venta: 45 | ID Vendedor: 10 | ID Producto: 17 | Cantidad: 105
+ID Venta: 46 | ID Vendedor: 2 | ID Producto: 20 | Cantidad: 109
+ID Venta: 47 | ID Vendedor: 7 | ID Producto: 1 | Cantidad: 107
+ID Venta: 48 | ID Vendedor: 8 | ID Producto: 3 | Cantidad: 102
+ID Venta: 50 | ID Vendedor: 6 | ID Producto: 10 | Cantidad: 123
+ID Venta: 51 | ID Vendedor: 5 | ID Producto: 8 | Cantidad: 148
+ID Venta: 53 | ID Vendedor: 7 | ID Producto: 19 | Cantidad: 146
+ID Venta: 54 | ID Vendedor: 8 | ID Producto: 16 | Cantidad: 103
+ID Venta: 67 | ID Vendedor: 10 | ID Producto: 2 | Cantidad: 116
+ID Venta: 72 | ID Vendedor: 4 | ID Producto: 14 | Cantidad: 149
+ID Venta: 73 | ID Vendedor: 7 | ID Producto: 5 | Cantidad: 131
+ID Venta: 74 | ID Vendedor: 8 | ID Producto: 16 | Cantidad: 115
+ID Venta: 75 | ID Vendedor: 7 | ID Producto: 20 | Cantidad: 112
+ID Venta: 77 | ID Vendedor: 8 | ID Producto: 19 | Cantidad: 114
+ID Venta: 78 | ID Vendedor: 3 | ID Producto: 13 | Cantidad: 147
+ID Venta: 81 | ID Vendedor: 3 | ID Producto: 4 | Cantidad: 127
+ID Venta: 85 | ID Vendedor: 2 | ID Producto: 9 | Cantidad: 131
+ID Venta: 88 | ID Vendedor: 7 | ID Producto: 12 | Cantidad: 112
+ID Venta: 89 | ID Vendedor: 7 | ID Producto: 20 | Cantidad: 131
+ID Venta: 90 | ID Vendedor: 3 | ID Producto: 20 | Cantidad: 101
+ID Venta: 91 | ID Vendedor: 1 | ID Producto: 16 | Cantidad: 125
+ID Venta: 92 | ID Vendedor: 9 | ID Producto: 10 | Cantidad: 150
+ID Venta: 96 | ID Vendedor: 7 | ID Producto: 15 | Cantidad: 101
+ID Venta: 97 | ID Vendedor: 6 | ID Producto: 2 | Cantidad: 150
+ID Venta: 99 | ID Vendedor: 8 | ID Producto: 9 | Cantidad: 134
+ID Venta: 100 | ID Vendedor: 8 | ID Producto: 3 | Cantidad: 118
+ID Venta: 102 | ID Vendedor: 10 | ID Producto: 2 | Cantidad: 145
+ID Venta: 104 | ID Vendedor: 2 | ID Producto: 7 | Cantidad: 137
+ID Venta: 108 | ID Vendedor: 4 | ID Producto: 13 | Cantidad: 134
+ID Venta: 113 | ID Vendedor: 4 | ID Producto: 16 | Cantidad: 109
+ID Venta: 116 | ID Vendedor: 2 | ID Producto: 20 | Cantidad: 113
+ID Venta: 122 | ID Vendedor: 5 | ID Producto: 15 | Cantidad: 136
+ID Venta: 133 | ID Vendedor: 6 | ID Producto: 3 | Cantidad: 103
+ID Venta: 135 | ID Vendedor: 5 | ID Producto: 8 | Cantidad: 146
+ID Venta: 137 | ID Vendedor: 6 | ID Producto: 15 | Cantidad: 104
+ID Venta: 139 | ID Vendedor: 5 | ID Producto: 19 | Cantidad: 125
+ID Venta: 141 | ID Vendedor: 6 | ID Producto: 10 | Cantidad: 140
+ID Venta: 146 | ID Vendedor: 1 | ID Producto: 18 | Cantidad: 138
+ID Venta: 154 | ID Vendedor: 4 | ID Producto: 5 | Cantidad: 130
+ID Venta: 159 | ID Vendedor: 7 | ID Producto: 14 | Cantidad: 147
+ID Venta: 163 | ID Vendedor: 9 | ID Producto: 19 | Cantidad: 106
+ID Venta: 170 | ID Vendedor: 5 | ID Producto: 4 | Cantidad: 107
+ID Venta: 174 | ID Vendedor: 2 | ID Producto: 1 | Cantidad: 134
+ID Venta: 179 | ID Vendedor: 1 | ID Producto: 11 | Cantidad: 124
+ID Venta: 186 | ID Vendedor: 3 | ID Producto: 10 | Cantidad: 138
+ID Venta: 191 | ID Vendedor: 5 | ID Producto: 9 | Cantidad: 121
+ID Venta: 194 | ID Vendedor: 2 | ID Producto: 14 | Cantidad: 136
+ID Venta: 196 | ID Vendedor: 3 | ID Producto: 14 | Cantidad: 150
+ID Venta: 197 | ID Vendedor: 7 | ID Producto: 13 | Cantidad: 117
+ID Venta: 198 | ID Vendedor: 8 | ID Producto: 1 | Cantidad: 147
