@@ -1,0 +1,14 @@
+--- REPORTE GENERAL DE VENTAS ----
+Total de registros: 150
+MONTO TOTAL VENDIDO:
+S/. 0.00
+---------------------------------------
+VENDEDOR CON MAYOR RECAUDACIÓN:
+ID Vendedor: -1
+Total vendido: S/. 0.00
+---------------------------------------
+PRODUCTO MÁS VENDIDO:
+ID Producto: -1
+Total unidades: 0
+---------------------------------------
+VENTAS SOSPECHOSAS (cantidad>100):
