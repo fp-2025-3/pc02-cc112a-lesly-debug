@@ -1,0 +1,4 @@
+Hola mundo
+Programacion en C++
+Archivos de texto
+Linea final
