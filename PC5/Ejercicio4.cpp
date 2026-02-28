@@ -26,6 +26,8 @@ int main(){
     const int MAX=1000;
     double totalVendedor[MAX]={0};
     int totalProducto[MAX]={0};
+    archivo.clear();
+    archivo.seekg(0);
     while(archivo.read((char*)&ventas,sizeof(Venta))){
         montoTotal=montoTotal+(ventas.cantidad*ventas.precioUnitario);
         totalVendedor[ventas.idVendedor]=totalVendedor[ventas.idVendedor]+(ventas.cantidad*ventas.precioUnitario);
@@ -47,7 +49,6 @@ int main(){
             mejorProducto=i;
         }
     }
-    archivo.close();
     ofstream reporte("reporte.txt");
     reporte<<fixed<<setprecision(2);
     reporte<<"--- REPORTE GENERAL DE VENTAS ----"<<endl;
@@ -64,11 +65,14 @@ int main(){
     reporte<<"Total unidades: "<<mayorCantidad<<endl;
     reporte<<"---------------------------------------"<<endl;
     reporte<<"VENTAS SOSPECHOSAS (cantidad>100):"<<endl;
+    archivo.clear();
+    archivo.seekg(0);
     while(archivo.read((char*)&ventas,sizeof(Venta))){
         if(ventas.cantidad>100){
             reporte<<"ID Venta: "<<ventas.idVenta<<" | ID Vendedor: "<<ventas.idVendedor<<" | ID Producto: "<<ventas.idProducto<<" | Cantidad: "<<ventas.cantidad<<endl;
         }
     }
+    archivo.close();
     reporte.close();
     return 0;
 }
