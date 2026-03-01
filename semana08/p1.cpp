@@ -14,7 +14,7 @@ class CuentaBancaria{
     CuentaBancaria(string t,int num,double s){
         titular=t;
         numeroCuenta=num;
-        if(saldo>=0){
+        if(s>=0){
             saldo=s;
         }else{
             saldo=0;
@@ -34,7 +34,7 @@ class CuentaBancaria{
         if(monto<=0){
             cout<<"[Error] El monto debe ser mayor que cero.\n";
         }else{
-            if(transaccionesDelDia>=3){
+            if(transaccionesDelDia>=LIMITE_RETIROS){
                 cout<<"[Error] Ha alcanzado el limite de 3 retiros diarios.\n";
             }else{
                 if(monto>saldo){
@@ -53,7 +53,7 @@ class CuentaBancaria{
         cout<<"Resumen de la cuenta:\n";
         cout<<"Titular: "<<titular<<endl;
         cout<<"Numero de cuenta: "<<numeroCuenta<<endl;
-        cout<<"Saldo: "<<saldo<<endl;
+        cout<<"Saldo actual: "<<saldo<<endl;
         cout<<"Retiros realizados hoy: "<<transaccionesDelDia<<" de 3 permitidos"<<endl;
     }
     void resetearTransacciones(){
