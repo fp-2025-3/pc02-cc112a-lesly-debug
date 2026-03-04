@@ -2,6 +2,7 @@
 #define VEHICULOS_H
 #include<iostream>
 #include<string>
+#include<fstream>
 using namespace std;
 class Vehiculo{
     protected:
@@ -11,12 +12,14 @@ class Vehiculo{
     double precioVenta;
     public:
     Vehiculo();
-    Vehiculo(string p,string m,int a,double pv);
+    Vehiculo(string,string,int,double);
     virtual ~Vehiculo();//OBLIGATORIO
-    virtual void aumentarPrecio()=0;
+    virtual double calcularPrecioFinal() const=0;
     virtual void guardar(ofstream& out) const=0;
-    virtual void cargar(ifstream& in) const=0;
-    virtual void mostrarInfo() const=0;
+    virtual void cargar(ifstream& in)=0;
+    virtual int getTipo() const=0;
+    virtual string getNombreTipo() const=0;
+    virtual void mostrar() const;
 };
 class Automovil:public Vehiculo{
     private:
@@ -25,22 +28,26 @@ class Automovil:public Vehiculo{
     Automovil();
     Automovil(string p,string m,int a,double pv,int np);
     ~Automovil();
-    void aumentarPrecio();
+    double calcularPrecioFinal() const override;
     void guardar(ofstream& out) const override;
-    void cargar(ifstream& in) const override;
-    void mostrarInfo() const override;
+    void cargar(ifstream& in) override;
+    int getTipo() const override;
+    string getNombreTipo() const override;
+    void mostrar() const override;
 };
 class Camion:public Vehiculo{
     private:
     double capacidad;
     public:
     Camion();
-    Camion(string p,string m,int a,double pv,double c);
+    Camion(string p,string m,int a,double pv,double cp);
     ~Camion();
-    void aumentarPrecio();
+    double calcularPrecioFinal() const override;
     void guardar(ofstream& out) const override;
-    void cargar(ifstream& in) const override;
-    void mostrarInfo() const override;
+    void cargar(ifstream& in) override;
+    int getTipo() const override;
+    string getNombreTipo() const override;
+    void mostrar() const override;
 };
 class Motocicleta:public Vehiculo{
     private:
@@ -49,9 +56,11 @@ class Motocicleta:public Vehiculo{
     Motocicleta();
     Motocicleta(string p,string m,int a,double pv,double pt);
     ~Motocicleta();
-    void aumentarPrecio();
+    double calcularPrecioFinal() const override;
     void guardar(ofstream& out) const override;
-    void cargar(ifstream& in) const override;
-    void mostrarInfo() const override;
+    void cargar(ifstream& in) override;
+    int getTipo() const override;
+    string getNombreTipo() const override;
+    void mostrar() const override;
 };
 #endif
