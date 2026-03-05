@@ -1,0 +1,8 @@
+Figura: Circulo
+Area: 78.5398
+Perimetro: 31.4159
+
+Figura: Rectangulo
+Area: 24
+Perimetro: 20
+
