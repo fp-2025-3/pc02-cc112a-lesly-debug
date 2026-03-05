@@ -20,14 +20,32 @@ void leerPolinomio(Polinomio& p){
         cin>>p.terminos[i].exponente;
     }
 }
-void mostrarPolinomio(const Polinomio& p){
-    for(int i=0;i<p.numTerminos;i++){
-        cout<<p.terminos[i].coeficiente;
-        if(p.terminos[i].exponente!=0){
-            cout<<"x^"<<p.terminos[i].exponente;
+void ordenarPolinomio(Polinomio& p){
+    for(int i=0;i<p.numTerminos-1;i++){
+        for(int j=i+1;j<p.numTerminos;j++){
+            if(p.terminos[i].exponente<p.terminos[j].exponente){
+                Termino aux=p.terminos[i];
+                p.terminos[i]=p.terminos[j];
+                p.terminos[j]=aux;
+            }
         }
-        if(i<(p.numTerminos-1)&&p.terminos[i+1].coeficiente>=0){
+    }
+}
+void mostrarPolinomio(const Polinomio& p){
+    if(p.numTerminos==0){
+        cout<<"0";
+        return;
+    }
+    for(int i=0;i<p.numTerminos;i++){
+        if(i>0&&p.terminos[i].coeficiente>=0){
             cout<<"+";
+        }
+        if(p.terminos[i].exponente==0){
+            cout<<p.terminos[i].coeficiente;
+        }else if(p.terminos[i].exponente==1){
+            cout<<p.terminos[i].coeficiente<<"x";
+        }else{
+            cout<<p.terminos[i].coeficiente<<"x^"<<p.terminos[i].exponente;
         }
     }
 }
@@ -60,21 +78,25 @@ void derivarPolinomio(const Polinomio& p,Polinomio& derivada){
     }
 }
 void sumaPolinomios(Polinomio& p1,Polinomio& p2,Polinomio& resultado){
-    int i=0,j=0,k=0;
+    ordenarPolinomio(p1);
+    ordenarPolinomio(p2);
     crearPolinomio(resultado,p1.numTerminos+p2.numTerminos);
+    int i=0,j=0,k=0;
     while(i<p1.numTerminos&&j<p2.numTerminos){
         if(p1.terminos[i].exponente==p2.terminos[j].exponente){
             resultado.terminos[k].coeficiente=p1.terminos[i].coeficiente+p2.terminos[j].coeficiente;
             resultado.terminos[k].exponente=p1.terminos[i].exponente;
+            i=i+1;
+            j=j+1;
         }else if(p1.terminos[i].exponente>p2.terminos[j].exponente){
             resultado.terminos[k].coeficiente=p1.terminos[i].coeficiente;
             resultado.terminos[k].exponente=p1.terminos[i].exponente;
+            i=i+1;
         }else if(p1.terminos[i].exponente<p2.terminos[j].exponente){
             resultado.terminos[k].coeficiente=p2.terminos[j].coeficiente;
             resultado.terminos[k].exponente=p2.terminos[j].exponente;
+            j=j+1;
         }
-        i=i+1;
-        j=j+1;
         k=k+1;
     }
     while(i<p1.numTerminos){
@@ -89,50 +111,63 @@ void sumaPolinomios(Polinomio& p1,Polinomio& p2,Polinomio& resultado){
         j=j+1;
         k=k+1;
     }
+    resultado.numTerminos=k;
 }
 void liberarPolinomio(Polinomio& p){
     delete[] p.terminos;
     p.terminos=nullptr;
+    p.numTerminos=0;
+}
+void derivadaEnesima(const Polinomio& p,Polinomio& resultado,int n){
+    crearPolinomio(resultado, p.numTerminos);
+    for(int i=0;i<p.numTerminos;i++){
+        resultado.terminos[i]=p.terminos[i];
+    }
+    for(int k=0;k<n;k++){
+        Polinomio temp;
+        derivarPolinomio(resultado,temp);
+        liberarPolinomio(resultado);
+        resultado=temp;
+    }
 }
 int main(){
-    Polinomio p1;
-    Polinomio p2;
-    Polinomio d1;
-    Polinomio d2;
-    Polinomio suma;
-    int n1;
-    int n2;
+    Polinomio p1,p2,d1,d2,suma;
+    int n1,n2;
     cout<<"Ingrese la cantidad de terminos del primer polinomio: ";
     cin>>n1;
     crearPolinomio(p1,n1);
     leerPolinomio(p1);
-    cout<<"\nPolinomio 1: ";
+    ordenarPolinomio(p1);
+    cout<<"\nP1(x)= ";
     mostrarPolinomio(p1);
     double v1;
-    cout<<"\nIngrese valor a evaluar: ";
+    cout<<"\nValor a evaluar: ";
     cin>>v1;
-    cout<<"Evaluando polinomio en x="<<v1<<": "<<evaluarPolinomio(p1,v1)<<endl;
+    cout<<"Resultado: "<<evaluarPolinomio(p1,v1)<<endl;
     cout<<"\nIngrese la cantidad de terminos del segundo polinomio: ";
     cin>>n2;
     crearPolinomio(p2,n2);
     leerPolinomio(p2);
-    cout<<"\nPolinomio 2: ";
+    ordenarPolinomio(p2);
+    cout<<"\nP2(x)= ";
     mostrarPolinomio(p2);
-    double v2;
-    cout<<"\nIngrese valor a evaluar: ";
-    cin>>v2;
-    cout<<"Evaluando polinomio en x="<<v2<<": "<<evaluarPolinomio(p2,v2)<<endl;
-    cout<<"\nDerivando polinomios:\n";
-    cout<<"Polinomio 1: ";
+    cout<<"\n\nDerivadas:\n";
     derivarPolinomio(p1,d1);
-    mostrarPolinomio(d1);
-    cout<<"\nPolinomio 2: ";
     derivarPolinomio(p2,d2);
+    cout<<"P1'(x)= ";
+    mostrarPolinomio(d1);
+    cout<<"\nP2'(x)= ";
     mostrarPolinomio(d2);
-    cout<<endl;
-    cout<<"\nSuma: ";
+    cout<<"\n\nSuma: ";
     sumaPolinomios(p1,p2,suma);
     mostrarPolinomio(suma);
+    Polinomio dn;
+    int n;
+    cout<<"\nOrden de derivada: ";
+    cin>>n;
+    derivadaEnesima(p1,dn,n);
+    cout<<"Derivada "<<n<<"-esima: ";
+    mostrarPolinomio(dn);
     liberarPolinomio(p1);
     liberarPolinomio(p2);
     liberarPolinomio(d1);
